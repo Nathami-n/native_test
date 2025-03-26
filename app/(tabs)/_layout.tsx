@@ -28,15 +28,15 @@ const TabsLayout = () => {
         tabBarIcon: ({color, size}) => 
           <FontAwesome5 name="airbnb" color={color} size={size}/>
       }} />
+        <Tabs.Screen name="inbox" options={{
+          tabBarLabel: "Inbox",
+          tabBarIcon: ({color, size}) => 
+            <MaterialCommunityIcons name="message-outline" color={color} size={size}/>
+        }} />
       <Tabs.Screen name="profile" options={{
         tabBarLabel: "Profile",
         tabBarIcon: ({color, size}) => 
           <Ionicons name="person-circle" color={color} size={size}/>
-      }} />
-      <Tabs.Screen name="inbox" options={{
-        tabBarLabel: "Inbox",
-        tabBarIcon: ({color, size}) => 
-          <MaterialCommunityIcons name="message-outline" color={color} size={size}/>
       }} />
     </Tabs>
   )
