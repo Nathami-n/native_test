@@ -8,7 +8,27 @@ import { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import 'react-native-reanimated';
 
+import * as SecureStore from "expo-secure-store";
+import { useAuth } from '@clerk/clerk-expo';
 
+
+const tokenCache = {
+  async getToken(key: string) {
+    try {
+      return SecureStore.getItemAsync(key);
+    } catch (error) {
+      return null;
+    }
+  },
+
+  async saveToken(key: string, value: string) {
+    try {
+      await SecureStore.setItemAsync(key, value);
+    } catch(err) {
+      return;
+    }
+  }
+}
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -48,9 +68,13 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!
+  if(!publishableKey) {
+    throw new Error("add EXPO_CLERK_PUBLISHABLE_KEY");
+  }
 
+  const {isLoaded, isSignedIn} = useAuth();
   const router = useRouter();
-
   return (
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
