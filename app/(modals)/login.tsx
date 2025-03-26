@@ -43,12 +43,31 @@ const LoginScreenModal = () => {
       </View>
 
       {/* outline buttons */}
-
-      <View>
+      <View style={{
+        gap: 20
+      }}>
         <TouchableOpacity style={styles.btnOutline}>
           <Ionicons  name="call-outline" size={24} style={defaultStyles.btnIcon}/>
           <Text style={styles.btnOutlineText}>
             Continue with Phone
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.btnOutline}>
+          <Ionicons  name="logo-apple" size={24} style={defaultStyles.btnIcon}/>
+          <Text style={styles.btnOutlineText}>
+            Continue with Apple
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.btnOutline}>
+          <Ionicons  name="logo-google" size={24} style={defaultStyles.btnIcon}/>
+          <Text style={styles.btnOutlineText}>
+            Continue with Google
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.btnOutline}>
+          <Ionicons  name="logo-facebook" size={24} style={defaultStyles.btnIcon}/>
+          <Text style={styles.btnOutlineText}>
+            Continue with Facebook
           </Text>
         </TouchableOpacity>
       </View>
