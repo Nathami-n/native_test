@@ -9,7 +9,7 @@ import { TouchableOpacity } from 'react-native';
 import 'react-native-reanimated';
 
 import * as SecureStore from "expo-secure-store";
-import { useAuth } from '@clerk/clerk-expo';
+import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
 
 
 const tokenCache = {
@@ -48,6 +48,10 @@ export default function RootLayout() {
     "mon-sb": require("../assets/fonts/Montserrat-SemiBold.ttf"),
     "mon-b": require("../assets/fonts/Montserrat-Bold.ttf")
   });
+  const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!
+  if(!publishableKey) {
+    throw new Error("add EXPO_CLERK_PUBLISHABLE_KEY");
+  }
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
@@ -64,17 +68,23 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+      <RootLayoutNav />
+    </ClerkProvider>
+  );
 }
 
 function RootLayoutNav() {
-  const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!
-  if(!publishableKey) {
-    throw new Error("add EXPO_CLERK_PUBLISHABLE_KEY");
-  }
-
+ 
   const {isLoaded, isSignedIn} = useAuth();
   const router = useRouter();
+
+  useEffect(() => {
+    if(isLoaded && !isSignedIn) {
+      router.push("/(modals)/login");
+    }
+  }, [isLoaded]);
   return (
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
