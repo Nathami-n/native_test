@@ -1,14 +1,19 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import { Link } from 'expo-router'
+import { Link, Stack } from 'expo-router'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import ExploreHeader from '@/components/ExploreHeader'
 
 const IndexTab = () => {
   return (
-    <View>
-     <Link href={`/listing/${3}`}>
-     Listing page
-     </Link>
-    </View>
+    <SafeAreaView style={{flex: 1}}>
+      <Stack.Screen  options={{
+        header: () => {
+          return <ExploreHeader/>
+        }
+      }}/>
+
+    </SafeAreaView>
   )
 }
 
