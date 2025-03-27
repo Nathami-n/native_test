@@ -20,7 +20,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.nate_the_george.airbnb"
     },
     "web": {
       "bundler": "metro",
@@ -32,7 +33,14 @@
     ],
     "experiments": {
       "typedRoutes": true
-      
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "8f18bd57-8966-49f6-a61c-d4a2b5a79ec0"
+      }
     }
   }
 }
