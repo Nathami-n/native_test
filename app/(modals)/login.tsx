@@ -1,6 +1,7 @@
 import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/styles";
 import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
+import { useOAuth, useSSO } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import {
   StyleSheet,
@@ -10,8 +11,28 @@ import {
   View,
 } from "react-native";
 
+
+
+enum Strategies {
+  GOOGLE="oauth_google",
+  APPLE= "ouath_apple",
+  FACEBOOK= "oauth_facebook",
+}
 const LoginScreenModal = () => {
   useWarmUpBrowser();
+  const {startOAuthFlow: appleAuth} = useOAuth({strategy: "oauth_apple"});
+  const {startOAuthFlow:googleAuth } = useOAuth({strategy: "oauth_google"});
+  const {startOAuthFlow: facebookAuth} = useOAuth({strategy: "oauth_facebook"});
+
+  const onSelectAuth = async  (strategy: Strategies)  => {
+
+    const selectAuth = {
+      [Strategies.APPLE]: appleAuth,
+      [Strategies.GOOGLE]: googleAuth,
+      [Strategies.FACEBOOK]: facebookAuth
+    }[strategy];
+    
+  }
   return (
     <View style={styles.container}>
       <TextInput
@@ -52,19 +73,19 @@ const LoginScreenModal = () => {
             Continue with Phone
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnOutline}>
+        <TouchableOpacity onPress={() => onSelectAuth(Strategies.APPLE)} style={styles.btnOutline}>
           <Ionicons  name="logo-apple" size={24} style={defaultStyles.btnIcon}/>
           <Text style={styles.btnOutlineText}>
             Continue with Apple
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnOutline}>
+        <TouchableOpacity style={styles.btnOutline} onPress={() => onSelectAuth(Strategies.GOOGLE)}>
           <Ionicons  name="logo-google" size={24} style={defaultStyles.btnIcon}/>
           <Text style={styles.btnOutlineText}>
             Continue with Google
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnOutline}>
+        <TouchableOpacity style={styles.btnOutline} onPress={( ) => onSelectAuth(Strategies.FACEBOOK)}>
           <Ionicons  name="logo-facebook" size={24} style={defaultStyles.btnIcon}/>
           <Text style={styles.btnOutlineText}>
             Continue with Facebook
