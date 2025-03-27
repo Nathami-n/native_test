@@ -3,6 +3,9 @@ import { defaultStyles } from "@/constants/styles";
 import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
 import { useOAuth, useSSO } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import * as AuthSession from "expo-auth-session";
+import * as Linking from 'expo-linking'
 import {
   StyleSheet,
   Text,
@@ -20,18 +23,25 @@ enum Strategies {
 }
 const LoginScreenModal = () => {
   useWarmUpBrowser();
-  const {startOAuthFlow: appleAuth} = useOAuth({strategy: "oauth_apple"});
-  const {startOAuthFlow:googleAuth } = useOAuth({strategy: "oauth_google"});
-  const {startOAuthFlow: facebookAuth} = useOAuth({strategy: "oauth_facebook"});
+ const {startSSOFlow} = useSSO();
+
+  const router = useRouter();
 
   const onSelectAuth = async  (strategy: Strategies)  => {
 
-    const selectAuth = {
-      [Strategies.APPLE]: appleAuth,
-      [Strategies.GOOGLE]: googleAuth,
-      [Strategies.FACEBOOK]: facebookAuth
-    }[strategy];
-    
+
+    try {
+      const {createdSessionId, setActive} = await startSSOFlow({
+        strategy: "oauth_google",
+        redirectUrl: AuthSession.makeRedirectUri({scheme: "myapp", path: "/"})
+      });
+      if(createdSessionId) {
+        router.back();
+        setActive!({session: createdSessionId});
+      }
+    } catch (err) {
+      console.error("OAuth Error", err);
+    }
   }
   return (
     <View style={styles.container}>
