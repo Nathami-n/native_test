@@ -1,15 +1,18 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { Link, Stack } from 'expo-router'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import ExploreHeader from '@/components/ExploreHeader'
+import { Stack } from 'expo-router'
+import React from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const IndexTab = () => {
+  const onDataChanged = (category: string) => {
+
+    console.log(category)
+  }
   return (
     <SafeAreaView style={{flex: 1}}>
       <Stack.Screen  options={{
         header: () => {
-          return <ExploreHeader/>
+          return <ExploreHeader onCategoryChanged={onDataChanged}/>
         }
       }}/>
 

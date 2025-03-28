@@ -44,7 +44,7 @@ const ExploreHeader = ({ onCategoryChanged }: Props) => {
     const scrollRef = useRef<ScrollView>(null);
     const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
     const [activeIndex, setActiveIndex] = useState(0);
-  
+
     const selectCategory = (index: number) => {
       const selected = itemsRef.current[index];
       setActiveIndex(index);
@@ -127,7 +127,6 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     paddingTop: 10
   },
-
   searchBtn: {
     backgroundColor: '#fff',
     flexDirection: 'row',
